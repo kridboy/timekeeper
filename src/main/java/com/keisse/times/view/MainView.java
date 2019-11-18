@@ -9,20 +9,17 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MainView {
     private static MainView instance;
-    private MainController mainController;
     private JFrame frame;
     private JLabel timeLabel;
     private JPanel mainPanel;
     private JTextArea performanceArea;
     private JButton startButton;
-    private JButton pauzeButton;
     private JButton stopButton;
-    private static final String START= "START";
-    private static final String PAUZE= "PAUZE";
+    private static final String START= " START ";
+    private static final String PAUZE= " PAUZE ";
     private static final String STOP = "STOP";
 
     private MainView() {
-        mainController = MainController.getInstance();
         initializePanel();
     }
 
@@ -33,10 +30,6 @@ public class MainView {
     public static void startTrackTime() {
         System.err.println(START);
 
-    }
-
-    public MainController getMainController() {
-        return mainController;
     }
 
     public JFrame getFrame() {
@@ -57,10 +50,6 @@ public class MainView {
 
     public JButton getStartButton() {
         return startButton;
-    }
-
-    public JButton getPauzeButton() {
-        return pauzeButton;
     }
 
     public JButton getStopButton() {
@@ -87,10 +76,6 @@ public class MainView {
         this.startButton = startButton;
     }
 
-    public void setPauzeButton(JButton pauzeButton) {
-        this.pauzeButton = pauzeButton;
-    }
-
     public void setStopButton(JButton stopButton) {
         this.stopButton = stopButton;
     }
@@ -109,14 +94,13 @@ public class MainView {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        new Timer(250, actionEvent -> mainController.updateTimerLabel(timeLabel)).start();
+        new Timer(250, actionEvent -> MainController.updateTimerLabel(timeLabel)).start();
     }
 
     private void initializePanel() {
         mainPanel = new JPanel();
         frame = new JFrame();
         startButton = new JButton(START);
-        pauzeButton = new JButton(PAUZE);
         stopButton = new JButton(STOP);
         performanceArea = new JTextArea();
         performanceArea.setColumns(30);
@@ -126,7 +110,6 @@ public class MainView {
         mainPanel.add(timeLabel);
 
         mainPanel.add(startButton);
-        mainPanel.add(pauzeButton);
         mainPanel.add(stopButton);
         mainPanel.add(performanceArea);
 

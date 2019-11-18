@@ -39,7 +39,30 @@ public class WorkDay {
 
     public void addPerformance(PerformanceRecord performance) {
         performanceSet.add(performance);
-        evaluatePerformances();
+        evaluate();
+    }
+
+    public void evaluate() {
+        //TODO still needs rewrite xD
+        int count = performanceSet.size();
+        Iterator<PerformanceRecord> iterator = performanceSet.iterator();
+        PerformanceRecord record=null;
+        if (count == 1) {
+            record = iterator.next();
+            workedTime = ChronoUnit.SECONDS.between(record.getStartTime(), record.getEndTime());
+        } else {
+            while (iterator.hasNext()) {
+                if(record!=null){
+                    breakTime += ChronoUnit.SECONDS.between(record.getEndTime(),(record = iterator.next()).getEndTime());
+                    workedTime = ChronoUnit.SECONDS.between(record.getStartTime(), record.getEndTime());
+                }else {
+                    record = iterator.next();
+                    workedTime += ChronoUnit.SECONDS.between(record.getStartTime(), record.getEndTime());
+                }
+            }
+
+
+        }
     }
 
     private void evaluatePerformances() {
@@ -49,17 +72,17 @@ public class WorkDay {
 
         if (count == 1) {
             PerformanceRecord record = iterator.next();
-            workedTime = ChronoUnit.MINUTES.between(record.getStartTime(), record.getEndTime());
+            workedTime = ChronoUnit.SECONDS.between(record.getStartTime(), record.getEndTime());
             breakTime = 0L;
         } else {
             while (iterator.hasNext()) {
                 PerformanceRecord record = iterator.next();
                 LocalTime breakStart = record.getEndTime();
-                workedTime += ChronoUnit.MINUTES.between(record.getStartTime(), record.getEndTime());
+                workedTime += ChronoUnit.SECONDS.between(record.getStartTime(), record.getEndTime());
 
                 record = iterator.next();
                 LocalTime breakEnd = record.getStartTime();
-                breakTime += ChronoUnit.MINUTES.between(breakStart, breakEnd);
+                breakTime += ChronoUnit.SECONDS.between(breakStart, breakEnd);
             }
         }
     }
