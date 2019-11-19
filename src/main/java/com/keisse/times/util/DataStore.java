@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Queue;
 
 public class DataStore {
-    private static final String BASE_URI = "src/main/resources/WorkWeeks";
+    private static final String BASE_URI = "src/main/resources/WorkWeeks/";
     private static final File BASE_FOLDER = new File(BASE_URI);
     private static DataStore instance;
 
@@ -49,6 +49,8 @@ public class DataStore {
         File file = new File(BASE_URI + weekOfYear + '/' + day.getDate() + ".csv");
 
         file.getParentFile().mkdirs();
+        if (!file.exists())
+            file.createNewFile();
         new CsvUtility(file).addData(buildCsv(day));
     }
 

@@ -2,10 +2,12 @@ package com.keisse.times.controller;
 
 import com.keisse.times.model.PerformanceRecord;
 import com.keisse.times.model.WorkDay;
+import com.keisse.times.util.CsvUtility;
 import com.keisse.times.util.DataStore;
 import com.keisse.times.view.MainView;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,23 +40,30 @@ public class MainController {
         if (isPauzed) {
             isPauzed = false;
             performance = new PerformanceRecord(LocalTime.now());
-            today.eval();
+            today.Evaluate();
             button.setText(PAUZE);
 
         } else {
             isPauzed = true;
             performance.setEndTime(LocalTime.now());
             today.addPerformance(performance);
-            today.eval();
+            today.Evaluate();
             button.setText(RESUME);
         }
         System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n",today.getBreakTime(),today.getWorkedTime());
     }
 
-    public void stopTrackTime(JButton button) {
+    public void stopTrackTime(JButton button){
         System.err.println("STAHP");
         performance.setEndTime(LocalTime.now());
         today.addPerformance(performance);
+
+        try {
+            dataStore.writeWorkDayToFile(today);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
     }
 
     public static void updateTimerLabel(JLabel label) {

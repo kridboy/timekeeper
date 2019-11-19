@@ -11,16 +11,17 @@ import java.util.Scanner;
 
 public class CsvUtility {
     public static final String REGEX = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)|(\r\n|\n)";
+    public static final String SRC_URI = "src/main/resources/WorkWeeks/";
+
     private Queue<String> dataQueue;
     private int columns;
     private String headerNames;
     private final File inputFile;
+    private boolean isExistingFile;
 
     public CsvUtility(File file) throws IOException {
         inputFile = file;
-        if (inputFile.exists()) {
-            dataQueue = parseCsvToDataSet(inputFile);
-        }
+        dataQueue = parseCsvToDataSet(inputFile);//TODO check if constructing with new file -> NPE
     }
 
     public Queue<String> getDataQueue() {
