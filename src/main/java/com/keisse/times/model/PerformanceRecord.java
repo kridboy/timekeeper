@@ -1,10 +1,12 @@
 package com.keisse.times.model;
 
+import java.time.Duration;
 import java.time.LocalTime;
 
 public class PerformanceRecord {
     private LocalTime startTime;
     private LocalTime endTime;
+    private Duration duration;
 
     public PerformanceRecord(LocalTime startTime, LocalTime endTime) {
         setStartTime(startTime);
@@ -13,6 +15,10 @@ public class PerformanceRecord {
 
     public PerformanceRecord(LocalTime startTime) {
         this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 
     public LocalTime getStartTime() {
@@ -29,5 +35,6 @@ public class PerformanceRecord {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+        duration = Duration.between(getStartTime(),getEndTime());
     }
 }

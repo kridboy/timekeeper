@@ -98,7 +98,8 @@ public class MainView {
     }
 
     private void initializePanel() {
-        mainPanel = new JPanel();
+        //TODO refactor for getters setters
+        setMainPanel(new JPanel());
         frame = new JFrame();
         startButton = new JButton(START);
         stopButton = new JButton(STOP);

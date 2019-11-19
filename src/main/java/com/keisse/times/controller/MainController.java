@@ -38,11 +38,14 @@ public class MainController {
         if (isPauzed) {
             isPauzed = false;
             performance = new PerformanceRecord(LocalTime.now());
+            today.eval();
             button.setText(PAUZE);
+
         } else {
             isPauzed = true;
             performance.setEndTime(LocalTime.now());
             today.addPerformance(performance);
+            today.eval();
             button.setText(RESUME);
         }
         System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n",today.getBreakTime(),today.getWorkedTime());
