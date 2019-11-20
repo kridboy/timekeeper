@@ -5,7 +5,7 @@ import com.keisse.times.controller.MainController;
 import javax.swing.*;
 import java.awt.*;
 
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class MainView {
     private static MainView instance;
@@ -116,7 +116,7 @@ public class MainView {
 
         frame.add(mainPanel);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
 
     public void openFrame() {

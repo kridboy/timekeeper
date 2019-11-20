@@ -62,7 +62,6 @@ public class WorkDay {
             performances.forEach(this::calcTime);
             breakTime += Duration.between(performances.lastEntry().getKey().getEndTime(), LocalTime.now()).getSeconds();
         }
-
     }
 
     private void calcTime(PerformanceRecord performanceRecord, Boolean added) {
@@ -70,6 +69,5 @@ public class WorkDay {
             performances.put(performanceRecord, true);
             workedTime += performanceRecord.getDuration().getSeconds();
         }
-
     }
 }

@@ -69,14 +69,14 @@ public class DataStore {
     }
 
     private String buildCsv(WorkDay day) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("DATE,START-TIME,END-TIME\n");
         for (PerformanceRecord e : day.getPerformanceSet()) {
             builder.append(day.getDate())
                     .append(',')
                     .append(e.getStartTime())
                     .append(',')
                     .append(e.getEndTime())
-                    .append("%n");
+                    .append('\n');
         }
         return builder.toString();
     }

@@ -2,7 +2,6 @@ package com.keisse.times.controller;
 
 import com.keisse.times.model.PerformanceRecord;
 import com.keisse.times.model.WorkDay;
-import com.keisse.times.util.CsvUtility;
 import com.keisse.times.util.DataStore;
 import com.keisse.times.view.MainView;
 
@@ -50,18 +49,25 @@ public class MainController {
             today.Evaluate();
             button.setText(RESUME);
         }
-        System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n",today.getBreakTime(),today.getWorkedTime());
+        System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n", today.getBreakTime(), today.getWorkedTime());
     }
 
-    public void stopTrackTime(JButton button){
+    public void stopTrackTime(JButton button) {
         System.err.println("STAHP");
-        performance.setEndTime(LocalTime.now());
-        today.addPerformance(performance);
 
-        try {
-            dataStore.writeWorkDayToFile(today);
-        }catch (IOException ioe){
-            ioe.printStackTrace();
+        String ObjButtons[] = {"Yes", "No"};
+        int PromptResult = JOptionPane.showOptionDialog(mainView.getFrame(), "Are you sure you You're done working?", "Exit Window", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+        if (PromptResult == JOptionPane.YES_OPTION) {
+            performance.setEndTime(LocalTime.now());
+            today.addPerformance(performance);
+
+            try {
+                dataStore.writeWorkDayToFile(today);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            mainView.getFrame().dispose();
+            System.exit(1);
         }
 
     }
@@ -79,8 +85,8 @@ public class MainController {
             builder.append(String.format("startTime:[%s]||", record.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"))));
             builder.append(String.format(" EndTime:[%s]%n", record.getEndTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"))));
         }
-        if(performance.getEndTime()==null)
-            builder.append("Performance started: @["+performance.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"))+"]");
+        if (performance.getEndTime() == null)
+            builder.append("Performance started: @[" + performance.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm:ss")) + "]");
         area.setText(builder.toString());
     }
 

@@ -21,7 +21,8 @@ public class CsvUtility {
 
     public CsvUtility(File file) throws IOException {
         inputFile = file;
-        dataQueue = parseCsvToDataSet(inputFile);//TODO check if constructing with new file -> NPE
+        dataQueue = new LinkedList<>();
+        //dataQueue = parseCsvToDataSet(inputFile);//TODO check if constructing with new file -> NPE
     }
 
     public Queue<String> getDataQueue() {
@@ -54,7 +55,7 @@ public class CsvUtility {
     }
 
     public void addData(String data) throws IOException {
-        try (FileWriter writer = new FileWriter(inputFile)) {
+        try (FileWriter writer = new FileWriter(inputFile,true)) {
             writer.append(data);
             dataQueue.add(data);
         }
