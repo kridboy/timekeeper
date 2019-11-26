@@ -15,6 +15,25 @@ public class MainView {
     private JTextArea performanceArea;
     private JButton startButton;
     private JButton stopButton;
+    private JLabel breakTimeCounter;
+
+    public JLabel getBreakTimeCounter() {
+        return breakTimeCounter;
+    }
+
+    public void setBreakTimeCounter(JLabel breakTimeCounter) {
+        this.breakTimeCounter = breakTimeCounter;
+    }
+
+    public JLabel getWorkedTimeCounter() {
+        return workedTimeCounter;
+    }
+
+    public void setWorkedTimeCounter(JLabel workedTimeCounter) {
+        this.workedTimeCounter = workedTimeCounter;
+    }
+
+    private JLabel workedTimeCounter;
     private static final String START= " START ";
     private static final String PAUZE= " PAUZE ";
     private static final String STOP = "STOP";
@@ -105,16 +124,24 @@ public class MainView {
         stopButton = new JButton(STOP);
         performanceArea = new JTextArea();
         performanceArea.setColumns(30);
+        workedTimeCounter = new JLabel("LEFT");
+        workedTimeCounter.setBounds(20,380,50,20);
+        breakTimeCounter = new JLabel("RIGHT");
+        breakTimeCounter.setBounds(340,380,50,20);
+
         frame.setPreferredSize(new Dimension(400, 400));
         timeLabel = new JLabel();
         timeLabel.setFont(new Font(timeLabel.getFont().getName(), Font.PLAIN, 35));
         mainPanel.add(timeLabel);
-
         mainPanel.add(startButton);
         mainPanel.add(stopButton);
         mainPanel.add(performanceArea);
+        mainPanel.add(workedTimeCounter);
+        mainPanel.add(breakTimeCounter);
 
         frame.add(mainPanel);
+        FlowLayout layout = new FlowLayout(FlowLayout.CENTER,10,10);
+        //frame.setLayout(layout);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }

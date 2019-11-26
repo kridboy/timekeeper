@@ -13,6 +13,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
+import static com.keisse.times.util.Normalizer.normalEndTime;
+import static com.keisse.times.util.Normalizer.normalStartTime;
+
 public class MainController {
     private static final String PAUZE = " PAUZE ";
     private static final String START = " START ";
@@ -38,7 +41,12 @@ public class MainController {
         System.err.println("TOGGLE");
         if (isPauzed) {
             isPauzed = false;
-            performance = new PerformanceRecord(LocalTime.now());
+
+            if (today.hasPerformances())
+                performance = new PerformanceRecord(LocalTime.now());
+            else
+                performance = new PerformanceRecord(normalStartTime(LocalTime.now()));
+
             today.Evaluate();
             button.setText(PAUZE);
 
@@ -49,16 +57,17 @@ public class MainController {
             today.Evaluate();
             button.setText(RESUME);
         }
-        System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n", today.getBreakTime(), today.getWorkedTime());
+        System.out.printf("BREAKTIME:[%dsec]||WORKEDTIME:[%dsec]%n", today.getBreakTime(),today.getWorkedTime());
+        System.out.printf("BREAKTIME:[%.1fmin]||WORKEDTIME:[%.1fmin]%n",((float) today.getBreakTime() / 60), ((float) today.getWorkedTime() / 60));
     }
 
     public void stopTrackTime(JButton button) {
         System.err.println("STAHP");
-
+        //TODO check if performance was started
         String ObjButtons[] = {"Yes", "No"};
         int PromptResult = JOptionPane.showOptionDialog(mainView.getFrame(), "Are you sure you You're done working?", "Exit Window", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
-            performance.setEndTime(LocalTime.now());
+            performance.setEndTime(normalEndTime(LocalTime.now()));
             today.addPerformance(performance);
 
             try {
@@ -73,7 +82,7 @@ public class MainController {
     }
 
     public static void updateTimerLabel(JLabel label) {
-        label.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("E, dd MMM hh:mm:ss")));
+        label.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("E, dd MMM HH:mm:ss")));
     }
 
     public void updatePerformanceField(JTextArea area) {
@@ -82,11 +91,11 @@ public class MainController {
         Iterator<PerformanceRecord> iterator = today.getPerformanceSet().iterator();
         while (iterator.hasNext()) {
             PerformanceRecord record = iterator.next();
-            builder.append(String.format("startTime:[%s]||", record.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"))));
-            builder.append(String.format(" EndTime:[%s]%n", record.getEndTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"))));
+            builder.append(String.format("startTime:[%s]||", record.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
+            builder.append(String.format(" EndTime:[%s]%n", record.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
         }
         if (performance.getEndTime() == null)
-            builder.append("Performance started: @[" + performance.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm:ss")) + "]");
+            builder.append("startTime:[" + performance.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "]");
         area.setText(builder.toString());
     }
 

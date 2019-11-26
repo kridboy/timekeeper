@@ -70,4 +70,8 @@ public class WorkDay {
             workedTime += performanceRecord.getDuration().getSeconds();
         }
     }
+
+    public boolean hasPerformances(){
+        return !getPerformanceSet().isEmpty();
+    }
 }
